@@ -16,9 +16,9 @@ void default_constants(){
   chassis.set_swing_constants(12, .3, .001, 2, 15);
 
   // Each exit condition set is in the form of (settle_error, settle_time, timeout).
-  chassis.set_drive_exit_conditions(1.5, 300, 5000);
-  chassis.set_turn_exit_conditions(1, 300, 3000);
-  chassis.set_swing_exit_conditions(1, 300, 3000);
+  chassis.set_drive_exit_conditions(1.5, 300, 1500);
+  chassis.set_turn_exit_conditions(1, 300, 1000);
+  chassis.set_swing_exit_conditions(1, 300, 1500);
 }
 
 /**
@@ -27,65 +27,19 @@ void default_constants(){
  * a slower max_voltage and greater settle_error than you would otherwise.
  */
 
+inline void chill(int ms) {
+  vex::task::sleep(ms);
+}
+
 void odom_constants(){
   default_constants();
-  chassis.heading_max_voltage = 10;
-  chassis.drive_max_voltage = 8;
+  chassis.heading_max_voltage = 12;
+  chassis.drive_max_voltage = 12;
   chassis.drive_settle_error = 3;
   chassis.boomerang_lead = .5;
   chassis.drive_min_voltage = 0;
 }
 
-/**
- * The expected behavior is to return to the start position.
- */
-
-void drive_test(){
-  chassis.drive_distance(6);
-  chassis.drive_distance(12);
-  chassis.drive_distance(18);
-  chassis.drive_distance(-36);
-}
-
-/**
- * The expected behavior is to return to the start angle, after making a complete turn.
- */
-
-void turn_test(){
-  chassis.turn_to_angle(5);
-  chassis.turn_to_angle(30);
-  chassis.turn_to_angle(90);
-  chassis.turn_to_angle(225);
-  chassis.turn_to_angle(0);
-}
-
-/**
- * Should swing in a fun S shape.
- */
-
-void swing_test(){
-  chassis.left_swing_to_angle(90);
-  chassis.right_swing_to_angle(0);
-}
-
-/**
- * A little of this, a little of that; it should end roughly where it started.
- */
-
-void full_test(){
-  chassis.drive_distance(24);
-  chassis.turn_to_angle(-45);
-  chassis.drive_distance(-36);
-  chassis.right_swing_to_angle(-90);
-  chassis.drive_distance(24);
-  chassis.turn_to_angle(0);
-}
-
-/**
- * Doesn't drive the robot, but just prints coordinates to the Brain screen 
- * so you can check if they are accurate to life. Push the robot around and
- * see if the coordinates increase like you'd expect.
- */
 
 void odom_test(){
   chassis.set_coordinates(0, 0, 0);
@@ -100,30 +54,144 @@ void odom_test(){
   }
 }
 
-/**
- * Should end in the same place it began, but the second movement
- * will be curved while the first is straight.
- */
+ void OpticalTest() {
+odom_constants();
+inveyor.setVelocity(100,percent);
+chassis.set_coordinates(0,0,0);
+//ColorTest(Optical1.hue());
+//Optical.setLight(ledState::on);
+lift.spinTo(-140,deg,true);
+//conveyor.spin(fwd);
 
-void tank_odom_test(){
-  odom_constants();
-  chassis.set_coordinates(0, 0, 0);
-  chassis.turn_to_point(24, 24);
-  chassis.drive_to_point(24,24);
-  chassis.drive_to_point(0,0);
-  chassis.turn_to_angle(0);
+//do this intead of a task
+//works optical sensor just isnt registering in the code
+while (true) {
+ if (Optical.hue() > 230 && Optical.hue() < 240) {
+  chill(200);
+  inveyor.stop();
+  lift.spinTo(-400,deg,true);
+  chill(1);
+  lift.spinTo(0,deg,true);
 }
 
+
+ if (Optical.hue() <= 20 || Optical.hue() >= 320) {
+  lift.spinTo(-140,deg,true);
+  inveyor.setVelocity(20,percent);
+  chill(430);
+  inveyor.stop();
+lift.spinTo(-800,deg,true);
+chill(1);
+lift.spinTo(0,deg,true);
+ }
+
+}
+ };
+
+void testDrive() {
+  //vex::task::skibidiMcgee(opticalDetect);
+
+  odom_constants();
+  inveyor.setVelocity(100, percent);
+  chassis.set_coordinates(-62,0,0);
+
+  //try out "lead"; lower lead means less curve; high lead big curve
+  //check for imu vibration
+  //setback is just offset
+  chassis.drive_timeout = 10000000;
+  //chain with voltage 4w
+  chassis.drive_to_pose(-3,46,0);
+  //waitUntil(intake.spin)
+
+
+
+  //example
+
+  chassis.drive_min_voltage = 3; //in volts
+  chassis.drive_to_pose(1,2,3); // x, y, heading
+  chassis.drive_to_pose(2,3,4); // new setpoint
+  chassis.turn_to_point(2,3);
+
+  //distance chaining?
+  //test using drive_stop after movements
+  //test brake button
+
+}
+
+
 /**
- * Drives in a square while making a full turn in the process. Should
- * end where it started.
+ * @brief scores 6 rings and prepares to rush opposite corner
  */
 
-void holonomic_odom_test(){
+ 
+void red_minus_elims_rush() {
   odom_constants();
-  chassis.set_coordinates(0, 0, 0);
-  chassis.holonomic_drive_to_pose(0, 18, 90);
-  chassis.holonomic_drive_to_pose(18, 0, 180);
-  chassis.holonomic_drive_to_pose(0, 18, 270);
-  chassis.holonomic_drive_to_pose(0, 0, 0);
+  inveyor.setVelocity(100,percent);
+  //position robot as far away from line as possible
+  chassis.set_coordinates(-60, 24, 270);
+
+  //grabbing clamp
+  chassis.drive_to_point(-37, 24);
+  chassis.drive_stop(coast);
+  chill(200);
+  grab.set(true);
+  inveyor.spin(fwd);
+
+  //ring rush
+  chassis.turn_to_angle(70);
+  inveyor.stop();
+  chill(200);
+  chassis.drive_to_pose(-8, 33, 0, 0.7); //adjust
+  chassis.drive_stop(coast);
+  inveyor.spin(fwd);
+  chill(1);
+  chassis.drive_to_point(-8, 56, 0, 5, chassis.heading_max_voltage);
+  chassis.drive_stop(coast);
+
+  //center ring
+  chassis.turn_to_angle(240);
+  chassis.drive_to_point(-15, 52);
+  chassis.drive_stop(coast);
+  chill(200);
+
+  //corner ring
+  chassis.drive_to_pose(-57, 57, 315, 0.5);
+  chassis.drive_stop(coast);
+
+
+  //use swing to angle here to move blue ring 
+  //score alliance
+  chassis.turn_to_angle(180);
+  chill(200);
+  grab.set(false);
+  chassis.drive_to_pose(-60, 12.5, 180);
+  chassis.drive_stop(coast);
+  intakeLift.set(true);
+  chassis.turn_to_angle(135);
+  chill(200);
+  chassis.drive_to_point(-57, 10);
+  chassis.drive_stop(coast);
+  intakeLift.set(false);
+  inveyor.spinFor(fwd,1,sec);
+  chassis.drive_to_point(-47, 0);
+  chassis.drive_stop(coast);
+  chassis.turn_to_angle(270);
+  chassis.drive_to_point(-57, 0);
+  chassis.drive_stop(coast);
+  inveyor.spin(fwd);
+
+  //ladder and rush
+  chassis.turn_to_angle(45);
+  inveyor.setVelocity(40, percent);
+  chassis.drive_to_pose(-16, 16, 135, .9);
+  chassis.drive_stop(coast);
+  chill(2000);
+
+}
+
+
+void red_pos_goal_rush() {
+  odom_constants();
+  inveyor.setVelocity(100,percent);
+  chassis.set_coordinates(-57,-60,90);
 }

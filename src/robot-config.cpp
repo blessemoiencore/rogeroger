@@ -12,6 +12,25 @@ brain  Brain;
 
 //Add your devices below, and don't forget to do the same in robot-config.h:
 
+motor leftMotorA = motor(PORT3, ratio6_1, true);
+motor leftMotorB = motor(PORT2, ratio6_1, true);
+motor leftMotorC = motor(PORT10, ratio6_1,false);
+motor_group LeftDriveSmart = motor_group(leftMotorA, leftMotorB, leftMotorC);
+motor rightMotorA = motor(PORT13, ratio6_1, false);
+motor rightMotorB = motor(PORT12, ratio6_1, true);
+motor rightMotorC = motor(PORT19, ratio6_1, false);
+motor_group RightDriveSmart = motor_group(rightMotorA, rightMotorB, rightMotorC);
+inertial DrivetrainInertial = inertial(PORT17);
+controller Controller1 = controller(primary);
+motor inveyor = motor(PORT20, ratio6_1, true);
+motor lift = motor(PORT5,ratio6_1, true );
+digital_out grab = digital_out(Brain.ThreeWirePort.H);
+optical Optical = optical(PORT1);
+potV2 Switcher = potV2(Brain.ThreeWirePort.B);
+
+digital_out intakeLift = digital_out(Brain.ThreeWirePort.A); //subject to change
+digital_out doink = digital_out(Brain.ThreeWirePort.C);
+
 
 void vexcodeInit( void ) {
   // nothing to initialize

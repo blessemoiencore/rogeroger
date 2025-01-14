@@ -108,6 +108,7 @@ PORT3,     -PORT4,
 
 int current_auton_selection = 0;
 bool auto_started = false;
+bool optical_auton_on = true;
 
 /**
  * Function before autonomous. It prints the current auton number on the screen
@@ -115,6 +116,22 @@ bool auto_started = false;
  * may need, like resetting pneumatic components. You can rename these autons to
  * be more descriptive, if you like.
  */
+
+void opticalDetect() 
+{
+  while(optical_auton_on) 
+  {
+      if (Optical.hue() > 10 && Optical.hue() < 20) 
+      {
+        task::sleep(160);
+          inveyor.stop();
+          lift.spinTo(-700,deg,true);
+          task::sleep(1000);
+          lift.spinTo(-140,deg,true);
+      }
+      task::sleep(20);
+  }
+};
 
 void pre_auton() {
   // Initializing Robot Configuration. DO NOT REMOVE!
@@ -129,37 +146,45 @@ void pre_auton() {
     Brain.Screen.printAt(5, 80, "Chassis Heading Reading:");
     Brain.Screen.printAt(5, 100, "%f", chassis.get_absolute_heading());
     Brain.Screen.printAt(5, 120, "Selected Auton:");
+
+    double angle = Switcher.angle(degrees);
+    Brain.Screen.setCursor(15, 20);
+    Brain.Screen.print(angle);
+
+    int total_autons = 5;
+    double deg_per_auton = 359/total_autons;
+    if(Switcher.angle(degrees) < deg_per_auton) {
+      current_auton_selection = 0;
+    }
+    else if (Switcher.angle(degrees) < 2 * deg_per_auton) {
+      current_auton_selection = 1;
+    }
+    else if (Switcher.angle(degrees) < 3 * deg_per_auton) {
+      current_auton_selection = 2;
+    }
+    else if (Switcher.angle(degrees) < 4 * deg_per_auton) {
+      current_auton_selection = 3;
+    }
+    else if (Switcher.angle(degrees) < 5 * deg_per_auton) {
+      current_auton_selection = 4;
+    }
+
     switch(current_auton_selection){
       case 0:
-        Brain.Screen.printAt(5, 140, "Auton 1");
-        break;
+         Brain.Screen.printAt(5, 140, "test drive");
+         break;
       case 1:
-        Brain.Screen.printAt(5, 140, "Auton 2");
-        break;
+         Brain.Screen.printAt(5, 140, "odom_test");
+         break;
       case 2:
-        Brain.Screen.printAt(5, 140, "Auton 3");
-        break;
+         Brain.Screen.printAt(5, 140, "optical test");
+         break;
       case 3:
-        Brain.Screen.printAt(5, 140, "Auton 4");
-        break;
-      case 4:
-        Brain.Screen.printAt(5, 140, "Auton 5");
-        break;
-      case 5:
-        Brain.Screen.printAt(5, 140, "Auton 6");
-        break;
-      case 6:
-        Brain.Screen.printAt(5, 140, "Auton 7");
-        break;
-      case 7:
-        Brain.Screen.printAt(5, 140, "Auton 8");
-        break;
-    }
-    if(Brain.Screen.pressing()){
-      while(Brain.Screen.pressing()) {}
-      current_auton_selection ++;
-    } else if (current_auton_selection == 8){
-      current_auton_selection = 0;
+          Brain.Screen.printAt(5, 140, "red minus ring rush for elims");
+          break;
+      case 4: 
+          Brain.Screen.printAt(5, 140, "red pos goal rush elims");
+          break;       
     }
     task::sleep(10);
   }
@@ -175,29 +200,24 @@ void pre_auton() {
 void autonomous(void) {
   auto_started = true;
   switch(current_auton_selection){ 
-    case 0:
-      drive_test();
+    case 0:         
+      testDrive();
       break;
-    case 1:         
-      drive_test();
-      break;
-    case 2:
-      turn_test();
-      break;
-    case 3:
-      swing_test();
-      break;
-    case 4:
-      full_test();
-      break;
-    case 5:
+   
+    case 1:
       odom_test();
       break;
-    case 6:
-      tank_odom_test();
+   
+    case 2:
+      OpticalTest();
       break;
-    case 7:
-      holonomic_odom_test();
+
+    case 3:
+      red_minus_elims_rush();
+      break;
+    
+    case 4:
+      red_pos_goal_rush();
       break;
  }
 }
@@ -215,21 +235,49 @@ void autonomous(void) {
 void usercontrol(void) {
   // User control code here, inside the loop
   while (1) {
-    // This is the main execution loop for the user control program.
-    // Each time through the loop your program should update motor + servo
-    // values based on feedback from the joysticks.
 
-    // ........................................................................
-    // Insert user code here. This is where you use the joystick values to
-    // update your motors, etc.
-    // ........................................................................
 
-    //Replace this line with chassis.control_tank(); for tank drive 
-    //or chassis.control_holonomic(); for holo drive.
+  if(Controller1.ButtonR1.pressing()) {
+      inveyor.spin(forward,100,percent);
+    } else if(Controller1.ButtonR2.pressing()) {
+      inveyor.spin(reverse,100,percent);
+    } else {
+      inveyor.stop();
+    }
+
+  //brake test
+  if(Controller1.ButtonB.pressing()) {
+    chassis.drive_stop(hold);
+  }
+    
+  Controller1.ButtonLeft.pressed([] {
+    lift.spinToPosition(-140, degrees);
+
+  });
+
+   Controller1.ButtonUp.pressed([] {
+    lift.spinToPosition(-775, degrees);
+
+  });
+
+  Controller1.ButtonRight.pressed([] {
+    lift.spinToPosition(-0, degrees);
+
+  });
+
+    Controller1.ButtonDown.pressed([] {
+    lift.spinToPosition(-250, degrees);
+
+  });
+  
+
+  Controller1.ButtonA.pressed([]{
+  grab.set(!grab.value());
+  });
+
     chassis.control_arcade();
 
-    wait(20, msec); // Sleep the task for a short amount of time to
-                    // prevent wasted resources.
+    wait(20, msec);
   }
 }
 
@@ -237,6 +285,13 @@ void usercontrol(void) {
 // Main will set up the competition functions and callbacks.
 //
 int main() {
+
+  inveyor.setVelocity(100,percent);
+
+  if(current_auton_selection == 6) {
+  opticalDetect();
+  }
+  
   // Set up callbacks for autonomous and driver control periods.
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
