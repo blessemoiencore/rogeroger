@@ -700,6 +700,16 @@ void Drive::control_arcade(){
 }
 
 /**
+ * Typical arcade drive but with exponential improvements
+ */
+void Drive::control_arcade_expo() {
+  float throttle = get_expo_value(controller(primary).Axis3.value(), 5);
+  float turn = get_expo_value(controller(primary).Axis1.value(), 5);
+  DriveL.spin(fwd, to_volt(throttle+turn), volt);
+  DriveR.spin(fwd, to_volt(throttle-turn), volt);
+}
+
+/**
  * Controls a chassis with left stick throttle and strafe, and right stick turning.
  * Default deadband is 5.
  */

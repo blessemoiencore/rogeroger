@@ -275,7 +275,7 @@ void usercontrol(void) {
   grab.set(!grab.value());
   });
 
-    chassis.control_arcade();
+    chassis.control_arcade_expo();
 
     wait(20, msec);
   }
