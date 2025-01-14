@@ -1,5 +1,5 @@
 #include "vex.h"
-
+#include <cmath>
 /**
  * Drive constructor for the chassis.
  * Even though there's only one constructor, there can be

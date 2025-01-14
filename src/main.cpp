@@ -1,5 +1,5 @@
 #include "vex.h"
-
+#include <cmath>
 
 using namespace vex;
 competition Competition;

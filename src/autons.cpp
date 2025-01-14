@@ -1,5 +1,5 @@
 #include "vex.h"
-
+#include <cmath>
 /**
  * Resets the constants for auton movement.
  * Modify these to change the default behavior of functions like
