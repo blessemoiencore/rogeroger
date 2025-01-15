@@ -10,9 +10,10 @@
 
 void default_constants(){
   // Each constant set is in the form of (maxVoltage, kP, kI, kD, startI).
-  chassis.set_drive_constants(12, 0.75, 8, 4, 0); // steady state errorr? increase integral 
+
+   //chassis.set_drive_constants(12, 0.525, 5, 1, 0);  works 48 in
+   chassis.set_drive_constants(12, 0.6, 5, 3, 0); 
   chassis.set_heading_constants(6, .4, 0, 1, 0);
-  //chassis.set_turn_constants(12, .4, 0.02, 3.25, 15);
   chassis.set_turn_constants(12, .4, 0.02, 3.25, 15);
   chassis.set_swing_constants(12, .3, .001, 2, 15);
 
@@ -102,7 +103,11 @@ void testDrive() {
   //setback is just offset
   //chain with voltage 4w
   chassis.drive_timeout = 100000;
-  chassis.drive_to_point(24,0);
+  chassis.drive_to_point(0,0);
+  Brain.Screen.clearScreen();
+  Brain.Screen.setCursor(10, 20);
+  Brain.Screen.print(chassis.get_absolute_heading());
+  chill(2000000000);
   Brain.Screen.clearScreen();
   Brain.Screen.setCursor(10, 20);
   Brain.Screen.print(chassis.get_absolute_heading());

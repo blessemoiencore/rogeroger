@@ -98,6 +98,7 @@ float PID::compute(float error){
     accumulated_error = 0; 
   }
 
+
   output = kp*error + ki*accumulated_error + kd*(error-previous_error);
 
   previous_error=error;

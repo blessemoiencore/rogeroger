@@ -138,7 +138,7 @@ void pre_auton() {
   vexcodeInit();
   default_constants();
   DrivetrainInertial.calibrate();
-  intakeLift.set(true);
+  //intakeLift.set(true);
   lift.resetPosition();
   lift.setVelocity(75,percent);
 
