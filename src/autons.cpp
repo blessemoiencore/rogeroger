@@ -10,14 +10,16 @@
 
 void default_constants(){
   // Each constant set is in the form of (maxVoltage, kP, kI, kD, startI).
-  chassis.set_drive_constants(10, 1.5, 0, 10, 0);
+  chassis.set_drive_constants(12, 0.75, 8, 4, 0); // steady state errorr? increase integral 
   chassis.set_heading_constants(6, .4, 0, 1, 0);
-  chassis.set_turn_constants(12, .4, .03, 3, 15);
+  //chassis.set_turn_constants(12, .4, 0.02, 3.25, 15);
+  chassis.set_turn_constants(12, .4, 0.02, 3.25, 15);
   chassis.set_swing_constants(12, .3, .001, 2, 15);
 
   // Each exit condition set is in the form of (settle_error, settle_time, timeout).
-  chassis.set_drive_exit_conditions(1.5, 300, 1500);
-  chassis.set_turn_exit_conditions(1, 300, 1000);
+  chassis.set_drive_exit_conditions(0.5, 300, 1500);
+
+  chassis.set_turn_exit_conditions(0.5, 300, 1000);
   chassis.set_swing_exit_conditions(1, 300, 1500);
 }
 
@@ -93,14 +95,19 @@ void testDrive() {
 
   odom_constants();
   inveyor.setVelocity(100, percent);
-  chassis.set_coordinates(-62,0,0);
+  chassis.set_coordinates(48,0,270);
 
   //try out "lead"; lower lead means less curve; high lead big curve
   //check for imu vibration
   //setback is just offset
-  chassis.drive_timeout = 10000000;
   //chain with voltage 4w
-  chassis.drive_to_pose(-3,46,0);
+  chassis.drive_timeout = 100000;
+  chassis.drive_to_point(24,0);
+  Brain.Screen.clearScreen();
+  Brain.Screen.setCursor(10, 20);
+  Brain.Screen.print(chassis.get_absolute_heading());
+  
+ 
   //waitUntil(intake.spin)
 
   //distance chaining?

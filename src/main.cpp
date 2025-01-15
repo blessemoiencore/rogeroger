@@ -138,6 +138,9 @@ void pre_auton() {
   vexcodeInit();
   default_constants();
   DrivetrainInertial.calibrate();
+  intakeLift.set(true);
+  lift.resetPosition();
+  lift.setVelocity(75,percent);
 
   while(!auto_started){
     Brain.Screen.clearScreen();
@@ -236,7 +239,7 @@ void autonomous(void) {
 void usercontrol(void) {
   // User control code here, inside the loop
   while (1) {
-
+  
 
   if(Controller1.ButtonR1.pressing()) {
       inveyor.spin(forward,80,percent);
@@ -253,7 +256,7 @@ void usercontrol(void) {
   }
     
   Controller1.ButtonLeft.pressed([] {
-    lift.spinToPosition(-140, degrees);
+    lift.spinToPosition(-1550, degrees);
 
   });
 
@@ -275,7 +278,7 @@ void usercontrol(void) {
 
   Controller1.ButtonA.pressed([]{
   grab.set(!grab.value());
-  task::sleep(100);
+  task::sleep(200);
   });
 
     chassis.control_arcade_expo();
