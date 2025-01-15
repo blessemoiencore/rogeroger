@@ -239,9 +239,9 @@ void usercontrol(void) {
 
 
   if(Controller1.ButtonR1.pressing()) {
-      inveyor.spin(forward,100,percent);
+      inveyor.spin(forward,80,percent);
     } else if(Controller1.ButtonR2.pressing()) {
-      inveyor.spin(reverse,100,percent);
+      inveyor.spin(reverse,80,percent);
     } else {
       inveyor.stop();
     }
