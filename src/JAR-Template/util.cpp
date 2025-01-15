@@ -218,6 +218,11 @@ float clamp_min_voltage(float drive_output, float drive_min_voltage){
   return drive_output;
 }
 
+template <typename T>
+int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
 /**
  * expo drive thingy
  * @return the velocity
@@ -227,5 +232,6 @@ float get_expo_value( float joystick_value, float deadband) {
   if (std::fabs(joystick_value) < deadband) {
     return 0;
   }
-  else return (joystick_value * joystick_value * joystick_value) / 10000;
+  else return sgn(joystick_value) *  (pow(sgn(joystick_value) * joystick_value, 1.9) ) / 63.095734448;
 }
+

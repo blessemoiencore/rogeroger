@@ -103,15 +103,6 @@ void testDrive() {
   chassis.drive_to_pose(-3,46,0);
   //waitUntil(intake.spin)
 
-
-
-  //example
-
-  chassis.drive_min_voltage = 3; //in volts
-  chassis.drive_to_pose(1,2,3); // x, y, heading
-  chassis.drive_to_pose(2,3,4); // new setpoint
-  chassis.turn_to_point(2,3);
-
   //distance chaining?
   //test using drive_stop after movements
   //test brake button
@@ -194,4 +185,5 @@ void red_pos_goal_rush() {
   odom_constants();
   inveyor.setVelocity(100,percent);
   chassis.set_coordinates(-57,-60,90);
+  intakeLift.set(true);
 }

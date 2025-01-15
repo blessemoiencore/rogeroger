@@ -24,11 +24,11 @@ inertial DrivetrainInertial = inertial(PORT17);
 controller Controller1 = controller(primary);
 motor inveyor = motor(PORT20, ratio6_1, true);
 motor lift = motor(PORT5,ratio6_1, true );
-digital_out grab = digital_out(Brain.ThreeWirePort.H);
+digital_out grab = digital_out(Brain.ThreeWirePort.A);
 optical Optical = optical(PORT1);
 potV2 Switcher = potV2(Brain.ThreeWirePort.B);
 
-digital_out intakeLift = digital_out(Brain.ThreeWirePort.A); //subject to change
+digital_out intakeLift = digital_out(Brain.ThreeWirePort.H); //subject to change
 digital_out doink = digital_out(Brain.ThreeWirePort.C);
 
 
