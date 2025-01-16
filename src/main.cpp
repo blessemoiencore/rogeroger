@@ -155,7 +155,7 @@ void pre_auton() {
     Brain.Screen.setCursor(15, 20);
     Brain.Screen.print(angle);
 
-    int total_autons = 5;
+    int total_autons = 6;
     double deg_per_auton = 359/total_autons;
     if(Switcher.angle(degrees) < deg_per_auton) {
       current_auton_selection = 0;
@@ -171,6 +171,9 @@ void pre_auton() {
     }
     else if (Switcher.angle(degrees) < 5 * deg_per_auton) {
       current_auton_selection = 4;
+    }
+    else if (Switcher.angle(degrees) < 6 * deg_per_auton) {
+      current_auton_selection = 5;
     }
 
     switch(current_auton_selection){
@@ -188,7 +191,10 @@ void pre_auton() {
           break;
       case 4: 
           Brain.Screen.printAt(5, 140, "red pos goal rush elims");
-          break;       
+          break;  
+      case 5:
+         Brain.Screen.printAt(5, 140, "second red ring rush elims");
+         break;  
     }
     task::sleep(10);
   }
@@ -242,38 +248,34 @@ void usercontrol(void) {
   
 
   if(Controller1.ButtonR1.pressing()) {
-      inveyor.spin(forward,80,percent);
+      inveyor.spin(reverse,100,percent);
     } else if(Controller1.ButtonR2.pressing()) {
-      inveyor.spin(reverse,80,percent);
+      inveyor.spin(fwd,100,percent);
     } else {
       inveyor.stop();
     }
 
-  //brake test
+
   if(Controller1.ButtonB.pressing()) {
     intakeLift.set(!intakeLift.value());
     task::sleep(500);
   }
     
   Controller1.ButtonLeft.pressed([] {
-    lift.spinToPosition(-1550, degrees);
+    lift.spinToPosition(-85, degrees);
 
   });
 
    Controller1.ButtonUp.pressed([] {
-    lift.spinToPosition(-775, degrees);
+    lift.spinToPosition(-290, degrees);
 
   });
 
   Controller1.ButtonRight.pressed([] {
-    lift.spinToPosition(-0, degrees);
+    lift.spinToPosition(0, degrees);
 
   });
 
-    Controller1.ButtonDown.pressed([] {
-    lift.spinToPosition(-250, degrees);
-
-  });
   
 
   Controller1.ButtonA.pressed([]{
@@ -293,7 +295,7 @@ void usercontrol(void) {
 //
 int main() {
 
-  inveyor.setVelocity(80,percent);
+  inveyor.setVelocity(100,percent);
 
   if(current_auton_selection == 6) {
   opticalDetect();

@@ -21,6 +21,7 @@ extern motor inveyor;
 extern motor lift;
 extern optical Optical;
 extern potV2 Switcher;
+extern rotation Rotation;
 
 extern digital_out intakeLift; //pneumatics intake
 extern digital_out doink;

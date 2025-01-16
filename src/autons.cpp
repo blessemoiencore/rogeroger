@@ -35,11 +35,11 @@ inline void chill(int ms) {
 }
 
 void odom_constants(){
-  default_constants();
-  chassis.heading_max_voltage = 12;
+  default_constants(); 
+  chassis.heading_max_voltage = 10;
   chassis.drive_max_voltage = 12;
   chassis.drive_settle_error = 3;
-  chassis.boomerang_lead = .5;
+  //chassis.boomerang_lead = 0.1;
   chassis.drive_min_voltage = 0;
 }
 
@@ -96,14 +96,11 @@ void testDrive() {
 
   odom_constants();
   inveyor.setVelocity(100, percent);
-  chassis.set_coordinates(48,0,270);
-
-  //try out "lead"; lower lead means less curve; high lead big curve
-  //check for imu vibration
+  chassis.set_coordinates(48,0,0);
   //setback is just offset
   //chain with voltage 4w
   chassis.drive_timeout = 100000;
-  chassis.drive_to_point(0,0);
+chassis.turn_to_angle(180);
   Brain.Screen.clearScreen();
   Brain.Screen.setCursor(10, 20);
   Brain.Screen.print(chassis.get_absolute_heading());
@@ -114,10 +111,7 @@ void testDrive() {
   
  
   //waitUntil(intake.spin)
-
-  //distance chaining?
   //test using drive_stop after movements
-  //test brake button
 
 }
 
@@ -196,6 +190,20 @@ void red_minus_elims_rush() {
 void red_pos_goal_rush() {
   odom_constants();
   inveyor.setVelocity(100,percent);
-  chassis.set_coordinates(-57,-60,90);
-  intakeLift.set(true);
+  chassis.set_coordinates(51,24,90);
+
+  /*
+  chassis.drive_to_point(32,24);
+  chill(200);
+  grab.set(true);
+  chill(200);
+  chassis.turn_to_angle(330);
+  */
+
+  chill(1);
+  chassis.drive_to_pose(13,34,360,0.7);
+  chill(1);
+  chassis.drive_to_pose(13, 24, 0, 0.6, chassis.boomerang_setback, 3, 5); //experiment with setback
+  chill(1);
+  chassis.drive_stop(hold);
 }

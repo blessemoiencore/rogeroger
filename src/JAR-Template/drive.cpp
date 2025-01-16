@@ -253,10 +253,24 @@ void Drive::drive_stop(vex::brakeType mode){
  */
 
 void Drive::turn_to_angle(float angle){
+
+  //rudimentary gain schedueler
+    if(angle == 90) {
+    chassis.set_turn_constants(12, .4, 0.02, 3.25, 15);
+    }
+  else if (angle == 180) {
+    chassis.set_turn_constants(12, .4, 0.02, 3.25, 15);
+    }
   turn_to_angle(angle, turn_max_voltage, turn_settle_error, turn_settle_time, turn_timeout, turn_kp, turn_ki, turn_kd, turn_starti);
 }
 
 void Drive::turn_to_angle(float angle, float turn_max_voltage){
+    if(angle == 90) {
+    chassis.set_turn_constants(12, .4, 0.02, 3.25, 15);
+    }
+  else if (angle == 180) {
+    chassis.set_turn_constants(12, .4, 0.02, 3.25, 15);
+    }
   turn_to_angle(angle, turn_max_voltage, turn_settle_error, turn_settle_time, turn_timeout, turn_kp, turn_ki, turn_kd, turn_starti);
 }
 
@@ -273,6 +287,7 @@ void Drive::turn_to_angle(float angle, float turn_max_voltage, float turn_settle
     drive_with_voltage(output, -output);
     task::sleep(10);
   }
+
 }
 
 /**
@@ -540,6 +555,10 @@ void Drive::drive_to_pose(float X_position, float Y_position, float angle, float
 }
 
 void Drive::drive_to_pose(float X_position, float Y_position, float angle, float lead, float setback, float drive_min_voltage){
+  drive_to_pose(X_position, Y_position, angle, lead, setback, drive_min_voltage, drive_max_voltage, heading_max_voltage, drive_settle_error, drive_settle_time, drive_timeout, drive_kp, drive_ki, drive_kd, drive_starti, heading_kp, heading_ki, heading_kd, heading_starti);
+}
+
+void Drive::drive_to_pose(float X_position, float Y_position, float angle, float lead, float setback, float drive_min_voltage, float drive_max_voltage){
   drive_to_pose(X_position, Y_position, angle, lead, setback, drive_min_voltage, drive_max_voltage, heading_max_voltage, drive_settle_error, drive_settle_time, drive_timeout, drive_kp, drive_ki, drive_kd, drive_starti, heading_kp, heading_ki, heading_kd, heading_starti);
 }
 
