@@ -1,4 +1,5 @@
 #include "vex.h"
+#include <cmath>
 
 using namespace vex;
 using signature = vision::signature;
@@ -29,8 +30,20 @@ optical Optical = optical(PORT1);
 potV2 Switcher = potV2(Brain.ThreeWirePort.B);
 rotation Rotation = rotation(PORT14);
 
-digital_out intakeLift = digital_out(Brain.ThreeWirePort.H); //subject to change
+digital_out intakeLift = digital_out(Brain.ThreeWirePort.H); 
 digital_out doink = digital_out(Brain.ThreeWirePort.C);
+
+
+
+void move_lift(float angle) {
+  while (Rotation.angle(degrees) < angle) {
+    double kp = 0.5;
+    double error = angle - Rotation.angle(degrees);
+    double voltage = (kp * error * 12) / angle ;
+    lift.spin(fwd, voltage, volt); //maybe reverse
+    vex::task::sleep(10);
+  }
+}
 
 
 void vexcodeInit( void ) {

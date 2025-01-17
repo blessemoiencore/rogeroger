@@ -13,7 +13,7 @@ void default_constants(){
 
    //chassis.set_drive_constants(12, 0.525, 5, 1, 0);  works 48 in
    chassis.set_drive_constants(12, 0.6, 5, 3, 0); 
-  chassis.set_heading_constants(6, .4, 0, 1, 0);
+  chassis.set_heading_constants(6, .4, 0, 1, 0); //controls drive to pose
   chassis.set_turn_constants(12, .4, 0.02, 3.25, 15);
   chassis.set_swing_constants(12, .3, .001, 2, 15);
 
@@ -34,12 +34,14 @@ inline void chill(int ms) {
   vex::task::sleep(ms);
 }
 
+
+
 void odom_constants(){
   default_constants(); 
   chassis.heading_max_voltage = 10;
   chassis.drive_max_voltage = 12;
-  chassis.drive_settle_error = 3;
-  //chassis.boomerang_lead = 0.1;
+  chassis.drive_settle_error = 1;
+  chassis.boomerang_lead = 0.1;
   chassis.drive_min_voltage = 0;
 }
 
@@ -187,7 +189,12 @@ void red_minus_elims_rush() {
 }
 
 
-void red_pos_goal_rush() {
+void red_pos_goal_rush() {}
+
+void red_minus_elims_rush_2() {
+  // note for drive to pose
+  // faster voltage equals more linear path
+  // perhaps tune heading pid
   odom_constants();
   inveyor.setVelocity(100,percent);
   chassis.set_coordinates(51,24,90);
@@ -199,6 +206,7 @@ void red_pos_goal_rush() {
   chill(200);
   chassis.turn_to_angle(330);
   */
+ chassis.boomerang_setback = 1;
 
   chill(1);
   chassis.drive_to_pose(13,34,360,0.7);

@@ -261,8 +261,11 @@ void usercontrol(void) {
     task::sleep(500);
   }
     
+    //change to move_lift
   Controller1.ButtonLeft.pressed([] {
     lift.spinToPosition(-85, degrees);
+  
+
 
   });
 
