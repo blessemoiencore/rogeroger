@@ -151,7 +151,7 @@ void pre_auton() {
     Brain.Screen.printAt(5, 100, "%f", chassis.get_absolute_heading());
     Brain.Screen.printAt(5, 120, "Selected Auton:");
 
-    double angle = Switcher.angle(degrees);
+    double angle = Rotation.angle(degrees);
     Brain.Screen.setCursor(15, 20);
     Brain.Screen.print(angle);
 
