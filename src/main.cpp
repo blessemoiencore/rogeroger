@@ -193,7 +193,7 @@ void pre_auton() {
           Brain.Screen.printAt(5, 140, "red pos goal rush elims");
           break;  
       case 5:
-         Brain.Screen.printAt(5, 140, "second red ring rush elims");
+         Brain.Screen.printAt(5, 140, "blue minus elims rush");
          break;  
     }
     task::sleep(10);
@@ -228,6 +228,9 @@ void autonomous(void) {
     
     case 4:
       red_pos_goal_rush();
+      break;
+    case 5:
+      red_minus_elims_rush_2();
       break;
  }
 }
@@ -264,7 +267,6 @@ void usercontrol(void) {
     //change to move_lift
   Controller1.ButtonLeft.pressed([] {
     lift.spinToPosition(-85, degrees);
-  
 
 
   });
@@ -275,7 +277,7 @@ void usercontrol(void) {
   });
 
   Controller1.ButtonRight.pressed([] {
-    lift.spinToPosition(0, degrees);
+    lift.spinToPosition(1, degrees);
 
   });
 

@@ -13,14 +13,14 @@ void default_constants(){
 
    //chassis.set_drive_constants(12, 0.525, 5, 1, 0);  works 48 in
    chassis.set_drive_constants(12, 0.6, 5, 3, 0); 
-  chassis.set_heading_constants(6, .4, 0, 1, 0); //controls drive to pose
+  chassis.set_heading_constants(12, 0.37, 0.5, 1, 0); //controls drive to pose
   chassis.set_turn_constants(12, .4, 0.02, 3.25, 15);
   chassis.set_swing_constants(12, .3, .001, 2, 15);
 
   // Each exit condition set is in the form of (settle_error, settle_time, timeout).
-  chassis.set_drive_exit_conditions(0.5, 300, 1500);
+  chassis.set_drive_exit_conditions(0.5, 300, 1200);
 
-  chassis.set_turn_exit_conditions(0.5, 300, 1000);
+  chassis.set_turn_exit_conditions(0.5, 300, 800);
   chassis.set_swing_exit_conditions(1, 300, 1500);
 }
 
@@ -38,7 +38,7 @@ inline void chill(int ms) {
 
 void odom_constants(){
   default_constants(); 
-  chassis.heading_max_voltage = 10;
+  chassis.heading_max_voltage = 5;
   chassis.drive_max_voltage = 12;
   chassis.drive_settle_error = 1;
   chassis.boomerang_lead = 0.1;
@@ -125,93 +125,157 @@ chassis.turn_to_angle(180);
  
 void red_minus_elims_rush() {
   odom_constants();
-  inveyor.setVelocity(100,percent);
-  //position robot as far away from line as possible
-  chassis.set_coordinates(-60, 24, 270);
-
-  //grabbing clamp
-  chassis.drive_to_point(-37, 24);
-  chassis.drive_stop(coast);
+  inveyor.setVelocity(75,percent);
+  chassis.set_coordinates(-51,24,-90);
+  chassis.drive_timeout = 800;
+  chassis.drive_to_point(-31,24);
+  default_constants();
   chill(200);
   grab.set(true);
-  inveyor.spin(fwd);
-
-  //ring rush
-  chassis.turn_to_angle(70);
-  inveyor.stop();
-  chill(200);
-  chassis.drive_to_pose(-8, 33, 0, 0.7); //adjust
-  chassis.drive_stop(coast);
-  inveyor.spin(fwd);
-  chill(1);
-  chassis.drive_to_point(-8, 56, 0, 5, chassis.heading_max_voltage);
-  chassis.drive_stop(coast);
-
-  //center ring
-  chassis.turn_to_angle(240);
-  chassis.drive_to_point(-15, 52);
-  chassis.drive_stop(coast);
-  chill(200);
-
-  //corner ring
-  chassis.drive_to_pose(-57, 57, 315, 0.5);
-  chassis.drive_stop(coast);
-
-
-  //use swing to angle here to move blue ring 
-  //score alliance
-  chassis.turn_to_angle(180);
-  chill(200);
-  grab.set(false);
-  chassis.drive_to_pose(-60, 12.5, 180);
-  chassis.drive_stop(coast);
+  chill(50);
   intakeLift.set(true);
-  chassis.turn_to_angle(135);
-  chill(200);
-  chassis.drive_to_point(-57, 10);
-  chassis.drive_stop(coast);
-  intakeLift.set(false);
-  inveyor.spinFor(fwd,1,sec);
-  chassis.drive_to_point(-47, 0);
-  chassis.drive_stop(coast);
-  chassis.turn_to_angle(270);
-  chassis.drive_to_point(-57, 0);
-  chassis.drive_stop(coast);
-  inveyor.spin(fwd);
+  inveyor.spin(reverse);
+  chassis.drive_to_point(-24,24);
+  chassis.drive_min_voltage = 4;
+  chassis.turn_timeout = 800;
+  chassis.turn_to_angle(180);
+  default_constants();
+  chassis.drive_distance(20);
 
-  //ladder and rush
-  chassis.turn_to_angle(45);
-  inveyor.setVelocity(40, percent);
-  chassis.drive_to_pose(-16, 16, 135, .9);
-  chassis.drive_stop(coast);
-  chill(2000);
+  //ring pile
+  chassis.drive_min_voltage = 3;
+  chassis.turn_timeout = 600;
+  chassis.turn_to_angle(-270, chassis.turn_max_voltage );
+  chassis.drive_distance(15);
+  chassis.drive_distance(-13, -305, 12, 4, chassis.drive_settle_error, chassis.drive_settle_time, 700);
+  chill(100);
+  chassis.drive_distance(15.5,-309);
+  chassis.drive_timeout = 700;
+  chassis.drive_distance(-10);
+  intakeLift.set(false);
+  chassis.drive_timeout = 1500;
+  chassis.drive_distance(-35,-170,12,8);
+  chassis.drive_timeout = 1000;
+  inveyor.stop();
+  chassis.drive_max_voltage = 10;
+  chassis.drive_distance(35,-175);
+  chassis.drive_stop(hold);
+  intakeLift.set(true);
+  wait(0.2,sec);
+  inveyor.spin(reverse);
+  chill(1400);
+  chassis.turn_timeout = 400;
+  chassis.turn_to_angle(-135);
+  chassis.drive_timeout = 600;
+  chassis.drive_distance(-23);
+  chassis.turn_to_angle(-45);
+  chassis.drive_max_voltage = 12;
+  chassis.drive_min_voltage = 12;
+  chassis.drive_distance(-23);
+
 
 }
 
 
-void red_pos_goal_rush() {}
+void red_pos_goal_rush() {
+  odom_constants();
+  inveyor.setVelocity(75,percent);
+  chassis.set_coordinates(14,8,252);
 
-void red_minus_elims_rush_2() {
+  //goal rush
+  chassis.drive_timeout = 1100;
+  chassis.drive_distance(-46.5);
+  grab.set(true);
+  chassis.turn_timeout = 300;
+  chassis.turn_to_angle(270);
+  chassis.drive_timeout = 700;
+  chassis.drive_distance(33);
+  grab.set(false);
+  chassis.drive_min_voltage = 3;
+  chassis.drive_distance(10);
+
+  //goal 2
+  chassis.turn_timeout = 600;
+  chassis.turn_to_angle(210);
+  chassis.drive_distance(-27);
+  chill(200);
+  grab.set(true);
+  inveyor.spin(reverse);
+  chill(300);
+
+  //ring
+  chassis.turn_to_angle(310);
+  inveyor.stop();
+  chassis.drive_min_voltage = 0;
+  chassis.drive_timeout = 800;
+  chassis.drive_distance(25);
+  chassis.drive_stop(coast);
+  intakeLift.set(true);
+  chill(200);
+  inveyor.spin(reverse);
+  chill(1400);
+
+  ///ladder
+  chassis.drive_distance(-20);
+  chassis.turn_to_angle(0);
+  chassis.drive_distance(13);
+
+
+
+
+}
+
+void blue_minus_elims_rush() {
   // note for drive to pose
   // faster voltage equals more linear path
   // perhaps tune heading pid
   odom_constants();
-  inveyor.setVelocity(100,percent);
+  inveyor.setVelocity(75,percent);
   chassis.set_coordinates(51,24,90);
-
-  /*
-  chassis.drive_to_point(32,24);
+  chassis.drive_timeout = 800;
+  chassis.drive_to_point(31,24);
+  default_constants();
   chill(200);
   grab.set(true);
-  chill(200);
-  chassis.turn_to_angle(330);
-  */
- chassis.boomerang_setback = 1;
+  chill(50);
+  intakeLift.set(true);
+  inveyor.spin(reverse);
+  chassis.drive_to_point(24,24);
+  chassis.drive_min_voltage = 4;
+  chassis.turn_timeout = 800;
+  chassis.turn_to_angle(0);
+  default_constants();
+  chassis.drive_distance(20);
 
-  chill(1);
-  chassis.drive_to_pose(13,34,360,0.7);
-  chill(1);
-  chassis.drive_to_pose(13, 24, 0, 0.6, chassis.boomerang_setback, 3, 5); //experiment with setback
-  chill(1);
+  //ring pile
+  chassis.drive_min_voltage = 3;
+  chassis.turn_timeout = 600;
+  chassis.turn_to_angle(270, chassis.turn_max_voltage );
+  chassis.drive_distance(15);
+  chassis.drive_distance(-13, 305, 12, 4, chassis.drive_settle_error, chassis.drive_settle_time, 700);
+  chill(100);
+  chassis.drive_distance(15.5,309);
+  chassis.drive_timeout = 700;
+  chassis.drive_distance(-10);
+  intakeLift.set(false);
+  chassis.drive_timeout = 1500;
+  chassis.drive_distance(-35,170,12,8);
+  chassis.drive_timeout = 1000;
+  inveyor.stop();
+  chassis.drive_max_voltage = 10;
+  chassis.drive_distance(35,175);
   chassis.drive_stop(hold);
+  intakeLift.set(true);
+  wait(0.2,sec);
+  inveyor.spin(reverse);
+  chill(1400);
+  chassis.turn_timeout = 400;
+  chassis.turn_to_angle(135);
+  chassis.drive_timeout = 600;
+  chassis.drive_distance(-23);
+  chassis.turn_to_angle(45);
+  chassis.drive_max_voltage = 12;
+  chassis.drive_min_voltage = 12;
+  chassis.drive_distance(-23);
+
 }

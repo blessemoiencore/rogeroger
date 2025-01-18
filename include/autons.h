@@ -15,6 +15,6 @@ void red_minus_elims_rush();
 
 void red_pos_goal_rush();
 
-void red_mins_elims_rush_2();
+void blue_minus_elims_rush();
 
 void OpticalTest();
