@@ -18,3 +18,5 @@ void red_pos_goal_rush();
 void blue_minus_elims_rush();
 
 void OpticalTest();
+
+void blue_pos_goal_rush();

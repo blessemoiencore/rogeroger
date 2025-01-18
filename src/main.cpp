@@ -155,7 +155,7 @@ void pre_auton() {
     Brain.Screen.setCursor(15, 20);
     Brain.Screen.print(angle);
 
-    int total_autons = 6;
+    int total_autons = 7;
     double deg_per_auton = 359/total_autons;
     if(Switcher.angle(degrees) < deg_per_auton) {
       current_auton_selection = 0;
@@ -174,6 +174,9 @@ void pre_auton() {
     }
     else if (Switcher.angle(degrees) < 6 * deg_per_auton) {
       current_auton_selection = 5;
+    }
+    else if (Switcher.angle(degrees) < 7 * deg_per_auton) {
+      current_auton_selection = 6;
     }
 
     switch(current_auton_selection){
@@ -194,6 +197,9 @@ void pre_auton() {
           break;  
       case 5:
          Brain.Screen.printAt(5, 140, "blue minus elims rush");
+         break;  
+      case 6:
+         Brain.Screen.printAt(5, 140, "blue pos goal rush");
          break;  
     }
     task::sleep(10);
@@ -229,8 +235,13 @@ void autonomous(void) {
     case 4:
       red_pos_goal_rush();
       break;
+
     case 5:
-      red_minus_elims_rush_2();
+      blue_minus_elims_rush();
+      break;
+    
+    case 6:
+      blue_pos_goal_rush();
       break;
  }
 }

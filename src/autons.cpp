@@ -138,7 +138,7 @@ void red_minus_elims_rush() {
   chassis.drive_to_point(-24,24);
   chassis.drive_min_voltage = 4;
   chassis.turn_timeout = 800;
-  chassis.turn_to_angle(180);
+  chassis.turn_to_angle(-0);
   default_constants();
   chassis.drive_distance(20);
 
@@ -220,9 +220,6 @@ void red_pos_goal_rush() {
   chassis.turn_to_angle(0);
   chassis.drive_distance(13);
 
-
-
-
 }
 
 void blue_minus_elims_rush() {
@@ -277,5 +274,50 @@ void blue_minus_elims_rush() {
   chassis.drive_max_voltage = 12;
   chassis.drive_min_voltage = 12;
   chassis.drive_distance(-23);
+
+}
+
+void blue_pos_goal_rush() {
+  odom_constants();
+  inveyor.setVelocity(75,percent);
+  chassis.set_coordinates(-14,8,-252);
+
+  //goal rush
+  chassis.drive_timeout = 1100;
+  chassis.drive_distance(-46.5);
+  grab.set(true);
+  chassis.turn_timeout = 300;
+  chassis.turn_to_angle(-270);
+  chassis.drive_timeout = 700;
+  chassis.drive_distance(33);
+  grab.set(false);
+  chassis.drive_min_voltage = 3;
+  chassis.drive_distance(10);
+
+  //goal 2
+  chassis.turn_timeout = 600;
+  chassis.turn_to_angle(-210);
+  chassis.drive_distance(-27);
+  chill(200);
+  grab.set(true);
+  inveyor.spin(reverse);
+  chill(300);
+
+  //ring
+  chassis.turn_to_angle(-310);
+  inveyor.stop();
+  chassis.drive_min_voltage = 0;
+  chassis.drive_timeout = 800;
+  chassis.drive_distance(25);
+  chassis.drive_stop(coast);
+  intakeLift.set(true);
+  chill(200);
+  inveyor.spin(reverse);
+  chill(1400);
+
+  ///ladder
+  chassis.drive_distance(-20);
+  chassis.turn_to_angle(0);
+  chassis.drive_distance(13);
 
 }
