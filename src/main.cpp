@@ -262,9 +262,9 @@ void usercontrol(void) {
   
 
   if(Controller1.ButtonR1.pressing()) {
-      inveyor.spin(reverse,100,percent);
+      inveyor.spin(reverse,80,percent);
     } else if(Controller1.ButtonR2.pressing()) {
-      inveyor.spin(fwd,100,percent);
+      inveyor.spin(fwd,80,percent);
     } else {
       inveyor.stop();
     }
@@ -277,7 +277,7 @@ void usercontrol(void) {
     
     //change to move_lift
   Controller1.ButtonLeft.pressed([] {
-    lift.spinToPosition(-85, degrees);
+    lift.spinToPosition(-87, degrees);
 
 
   });

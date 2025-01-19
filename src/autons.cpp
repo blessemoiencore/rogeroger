@@ -98,19 +98,15 @@ void testDrive() {
 
   odom_constants();
   inveyor.setVelocity(100, percent);
-  chassis.set_coordinates(48,0,0);
+  chassis.set_coordinates(0,0,0);
   //setback is just offset
   //chain with voltage 4w
-  chassis.drive_timeout = 100000;
-chassis.turn_to_angle(180);
-  Brain.Screen.clearScreen();
-  Brain.Screen.setCursor(10, 20);
-  Brain.Screen.print(chassis.get_absolute_heading());
-  chill(2000000000);
-  Brain.Screen.clearScreen();
-  Brain.Screen.setCursor(10, 20);
-  Brain.Screen.print(chassis.get_absolute_heading());
-  
+  intakeLift.set(true);
+  chassis.drive_max_voltage = 12;
+  chassis.drive_min_voltage = 9;
+  chassis.drive_distance(40);
+  chassis.drive_stop(coast);
+
  
   //waitUntil(intake.spin)
   //test using drive_stop after movements
@@ -122,10 +118,10 @@ chassis.turn_to_angle(180);
  * @brief scores 6 rings and prepares to rush opposite corner
  */
 
- 
+ //altered
 void red_minus_elims_rush() {
   odom_constants();
-  inveyor.setVelocity(75,percent);
+  inveyor.setVelocity(85,percent);
   chassis.set_coordinates(-51,24,-90);
   chassis.drive_timeout = 800;
   chassis.drive_to_point(-31,24);
@@ -149,16 +145,17 @@ void red_minus_elims_rush() {
   chassis.drive_distance(15);
   chassis.drive_distance(-13, -305, 12, 4, chassis.drive_settle_error, chassis.drive_settle_time, 700);
   chill(100);
-  chassis.drive_distance(15.5,-309);
+  chassis.drive_distance(15.5,-312);
   chassis.drive_timeout = 700;
   chassis.drive_distance(-10);
   intakeLift.set(false);
   chassis.drive_timeout = 1500;
   chassis.drive_distance(-35,-170,12,8);
+  chassis.drive_stop(hold);
   chassis.drive_timeout = 1000;
   inveyor.stop();
   chassis.drive_max_voltage = 10;
-  chassis.drive_distance(35,-175);
+  chassis.drive_distance(38.5,-175);
   chassis.drive_stop(hold);
   intakeLift.set(true);
   wait(0.2,sec);
@@ -171,7 +168,8 @@ void red_minus_elims_rush() {
   chassis.turn_to_angle(-45);
   chassis.drive_max_voltage = 12;
   chassis.drive_min_voltage = 12;
-  chassis.drive_distance(-23);
+  chassis.drive_distance(-20);
+  chassis.drive_stop(hold);
 
 
 }
@@ -179,7 +177,7 @@ void red_minus_elims_rush() {
 
 void red_pos_goal_rush() {
   odom_constants();
-  inveyor.setVelocity(75,percent);
+  inveyor.setVelocity(69,percent);
   chassis.set_coordinates(14,8,252);
 
   //goal rush
@@ -251,6 +249,7 @@ void blue_minus_elims_rush() {
   chassis.drive_distance(15);
   chassis.drive_distance(-13, 305, 12, 4, chassis.drive_settle_error, chassis.drive_settle_time, 700);
   chill(100);
+  //chassis.drive_distance(15.5,309);
   chassis.drive_distance(15.5,309);
   chassis.drive_timeout = 700;
   chassis.drive_distance(-10);
@@ -265,7 +264,7 @@ void blue_minus_elims_rush() {
   intakeLift.set(true);
   wait(0.2,sec);
   inveyor.spin(reverse);
-  chill(1400);
+  chill(1200);
   chassis.turn_timeout = 400;
   chassis.turn_to_angle(135);
   chassis.drive_timeout = 600;
@@ -273,7 +272,8 @@ void blue_minus_elims_rush() {
   chassis.turn_to_angle(45);
   chassis.drive_max_voltage = 12;
   chassis.drive_min_voltage = 12;
-  chassis.drive_distance(-23);
+  chassis.drive_distance(-20);
+  chassis.drive_stop(hold);
 
 }
 
