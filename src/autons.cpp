@@ -61,7 +61,7 @@ void odom_test(){
 
  void OpticalTest() {
 odom_constants();
-inveyor.setVelocity(100,percent);
+intake.setVelocity(100,percent);
 chassis.set_coordinates(0,0,0);
 //ColorTest(Optical1.hue());
 //Optical.setLight(ledState::on);
@@ -73,7 +73,7 @@ lift.spinTo(-140,deg,true);
 while (true) {
  if (Optical.hue() > 230 && Optical.hue() < 240) {
   chill(200);
-  inveyor.stop();
+  intake.stop();
   lift.spinTo(-400,deg,true);
   chill(1);
   lift.spinTo(0,deg,true);
@@ -82,9 +82,9 @@ while (true) {
 
  if (Optical.hue() <= 20 || Optical.hue() >= 320) {
   lift.spinTo(-140,deg,true);
-  inveyor.setVelocity(20,percent);
+  intake.setVelocity(20,percent);
   chill(430);
-  inveyor.stop();
+  intake.stop();
 lift.spinTo(-800,deg,true);
 chill(1);
 lift.spinTo(0,deg,true);
@@ -97,7 +97,7 @@ void testDrive() {
   //vex::task::skibidiMcgee(opticalDetect);
 
   odom_constants();
-  inveyor.setVelocity(100, percent);
+  intake.setVelocity(100, percent);
   chassis.set_coordinates(0,0,0);
   //setback is just offset
   //chain with voltage 4w
@@ -121,7 +121,7 @@ void testDrive() {
  //altered
 void red_minus_elims_rush() {
   odom_constants();
-  inveyor.setVelocity(85,percent);
+  intake.setVelocity(85,percent);
   chassis.set_coordinates(-51,24,-90);
   chassis.drive_timeout = 800;
   chassis.drive_to_point(-31,24);
@@ -130,7 +130,7 @@ void red_minus_elims_rush() {
   grab.set(true);
   chill(50);
   intakeLift.set(true);
-  inveyor.spin(reverse);
+  intake.spin(reverse);
   chassis.drive_to_point(-24,24);
   chassis.drive_min_voltage = 4;
   chassis.turn_timeout = 800;
@@ -153,13 +153,13 @@ void red_minus_elims_rush() {
   chassis.drive_distance(-35,-170,12,8);
   chassis.drive_stop(hold);
   chassis.drive_timeout = 1000;
-  inveyor.stop();
+  intake.stop();
   chassis.drive_max_voltage = 10;
   chassis.drive_distance(38.5,-175);
   chassis.drive_stop(hold);
   intakeLift.set(true);
   wait(0.2,sec);
-  inveyor.spin(reverse);
+  intake.spin(reverse);
   chill(1400);
   chassis.turn_timeout = 400;
   chassis.turn_to_angle(-135);
@@ -177,7 +177,7 @@ void red_minus_elims_rush() {
 
 void red_pos_goal_rush() {
   odom_constants();
-  inveyor.setVelocity(69,percent);
+  intake.setVelocity(69,percent);
   chassis.set_coordinates(14,8,252);
 
   //goal rush
@@ -198,19 +198,19 @@ void red_pos_goal_rush() {
   chassis.drive_distance(-27);
   chill(200);
   grab.set(true);
-  inveyor.spin(reverse);
+  intake.spin(reverse);
   chill(300);
 
   //ring
   chassis.turn_to_angle(310);
-  inveyor.stop();
+  intake.stop();
   chassis.drive_min_voltage = 0;
   chassis.drive_timeout = 800;
   chassis.drive_distance(25);
   chassis.drive_stop(coast);
   intakeLift.set(true);
   chill(200);
-  inveyor.spin(reverse);
+  intake.spin(reverse);
   chill(1400);
 
   ///ladder
@@ -225,7 +225,7 @@ void blue_minus_elims_rush() {
   // faster voltage equals more linear path
   // perhaps tune heading pid
   odom_constants();
-  inveyor.setVelocity(75,percent);
+  intake.setVelocity(75,percent);
   chassis.set_coordinates(51,24,90);
   chassis.drive_timeout = 800;
   chassis.drive_to_point(31,24);
@@ -234,7 +234,7 @@ void blue_minus_elims_rush() {
   grab.set(true);
   chill(50);
   intakeLift.set(true);
-  inveyor.spin(reverse);
+  intake.spin(reverse);
   chassis.drive_to_point(24,24);
   chassis.drive_min_voltage = 4;
   chassis.turn_timeout = 800;
@@ -257,13 +257,13 @@ void blue_minus_elims_rush() {
   chassis.drive_timeout = 1500;
   chassis.drive_distance(-35,170,12,8);
   chassis.drive_timeout = 1000;
-  inveyor.stop();
+  intake.stop();
   chassis.drive_max_voltage = 10;
   chassis.drive_distance(35,175);
   chassis.drive_stop(hold);
   intakeLift.set(true);
   wait(0.2,sec);
-  inveyor.spin(reverse);
+  intake.spin(reverse);
   chill(1200);
   chassis.turn_timeout = 400;
   chassis.turn_to_angle(135);
@@ -279,7 +279,7 @@ void blue_minus_elims_rush() {
 
 void blue_pos_goal_rush() {
   odom_constants();
-  inveyor.setVelocity(75,percent);
+  intake.setVelocity(75,percent);
   chassis.set_coordinates(-14,8,-252);
 
   //goal rush
@@ -300,19 +300,19 @@ void blue_pos_goal_rush() {
   chassis.drive_distance(-27);
   chill(200);
   grab.set(true);
-  inveyor.spin(reverse);
+  intake.spin(reverse);
   chill(300);
 
   //ring
   chassis.turn_to_angle(-310);
-  inveyor.stop();
+  intake.stop();
   chassis.drive_min_voltage = 0;
   chassis.drive_timeout = 800;
   chassis.drive_distance(25);
   chassis.drive_stop(coast);
   intakeLift.set(true);
   chill(200);
-  inveyor.spin(reverse);
+  intake.spin(reverse);
   chill(1400);
 
   ///ladder

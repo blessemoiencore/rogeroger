@@ -124,7 +124,7 @@ void opticalDetect()
       if (Optical.hue() > 10 && Optical.hue() < 20) 
       {
         task::sleep(160);
-          inveyor.stop();
+          intake.stop();
           lift.spinTo(-700,deg,true);
           task::sleep(1000);
           lift.spinTo(-140,deg,true);
@@ -262,11 +262,14 @@ void usercontrol(void) {
   
 
   if(Controller1.ButtonR1.pressing()) {
-      inveyor.spin(reverse,80,percent);
+      conveyor.spin(reverse,100,percent);
+      intake.spin(fwd,100,percent);
     } else if(Controller1.ButtonR2.pressing()) {
-      inveyor.spin(fwd,80,percent);
+      conveyor.spin(fwd,100,percent);
+      intake.spin(reverse,100,percent);
     } else {
-      inveyor.stop();
+      conveyor.stop();
+      intake.stop();
     }
 
 
@@ -278,7 +281,7 @@ void usercontrol(void) {
     //change to move_lift
   Controller1.ButtonLeft.pressed([] {
     lift.spinToPosition(-87, degrees);
-
+    intakeLift.set(false);
 
   });
 
@@ -311,7 +314,8 @@ void usercontrol(void) {
 //
 int main() {
 
-  inveyor.setVelocity(100,percent);
+  conveyor.setVelocity(100,percent);
+  intake.setVelocity(100, percent);
 
   if(current_auton_selection == 6) {
   opticalDetect();
