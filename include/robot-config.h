@@ -27,7 +27,6 @@ extern rotation Rotation;
 extern digital_out intakeLift; //pneumatics intake
 extern digital_out doink;
 
-void move_lift(float angle);
 
 
 void  vexcodeInit( void );

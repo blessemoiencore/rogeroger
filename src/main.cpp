@@ -130,8 +130,40 @@ void opticalDetect()
           lift.spinTo(-140,deg,true);
       }
       task::sleep(20);
+
   }
 };
+
+void move_lift(float angle) {
+  float timeout = 0;
+  float tolerance = 10;
+  float error1 = 0;
+  float previous_error = 0;
+  while ((fabs(angle - Rotation.angle(degrees)) > tolerance)) {
+    
+    float kp = 0.02;
+    previous_error = error1;
+
+    error1 = angle - Rotation.angle(degrees);
+
+    float voltage = kp * error1;
+
+    voltage = clamp(voltage, -12, 12); 
+
+        if ((error1>0 && previous_error<0)||(error1<0 && previous_error>0)){ 
+          voltage = 0;
+    }
+
+    if(timeout >= 1000) {
+      voltage = 0;
+    }
+    lift.spin(fwd, voltage, volt); 
+    
+    vex::task::sleep(20);
+    timeout +=20;
+  }
+  
+}
 
 void pre_auton() {
   // Initializing Robot Configuration. DO NOT REMOVE!
@@ -140,7 +172,6 @@ void pre_auton() {
   DrivetrainInertial.calibrate();
   //intakeLift.set(true);
   lift.resetPosition();
-  lift.setVelocity(75,percent);
 
   while(!auto_started){
     Brain.Screen.clearScreen();
@@ -155,27 +186,18 @@ void pre_auton() {
     Brain.Screen.setCursor(15, 20);
     Brain.Screen.print(angle);
 
-    int total_autons = 7;
+    int total_autons = 4;
     double deg_per_auton = 359/total_autons;
     if(Switcher.angle(degrees) < deg_per_auton) {
-      current_auton_selection = 0;
-    }
-    else if (Switcher.angle(degrees) < 2 * deg_per_auton) {
-      current_auton_selection = 1;
-    }
-    else if (Switcher.angle(degrees) < 3 * deg_per_auton) {
-      current_auton_selection = 2;
-    }
-    else if (Switcher.angle(degrees) < 4 * deg_per_auton) {
       current_auton_selection = 3;
     }
-    else if (Switcher.angle(degrees) < 5 * deg_per_auton) {
+    else if (Switcher.angle(degrees) < 2 * deg_per_auton) {
       current_auton_selection = 4;
     }
-    else if (Switcher.angle(degrees) < 6 * deg_per_auton) {
+    else if (Switcher.angle(degrees) < 3 * deg_per_auton) {
       current_auton_selection = 5;
     }
-    else if (Switcher.angle(degrees) < 7 * deg_per_auton) {
+    else if (Switcher.angle(degrees) < 4 * deg_per_auton) {
       current_auton_selection = 6;
     }
 
@@ -215,11 +237,12 @@ void pre_auton() {
 
 void autonomous(void) {
   auto_started = true;
+  chassis.drive_distance(1);
+
   switch(current_auton_selection){ 
     case 0:         
       testDrive();
       break;
-   
     case 1:
       odom_test();
       break;
@@ -258,6 +281,7 @@ void autonomous(void) {
 
 void usercontrol(void) {
   // User control code here, inside the loop
+  lift.setVelocity(80,percent);
   while (1) {
   
 
@@ -280,18 +304,19 @@ void usercontrol(void) {
     
     //change to move_lift
   Controller1.ButtonLeft.pressed([] {
-    lift.spinToPosition(-87, degrees);
+    lift.spinToPosition(-95, degrees);
     intakeLift.set(false);
 
   });
 
    Controller1.ButtonUp.pressed([] {
-    lift.spinToPosition(-290, degrees);
+    lift.spinToPosition(-490, degrees);
 
   });
 
   Controller1.ButtonRight.pressed([] {
-    lift.spinToPosition(1, degrees);
+    lift.spinToPosition(0, degrees);
+
 
   });
 

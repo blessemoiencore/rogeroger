@@ -1,5 +1,7 @@
 #include "vex.h"
-#include <cmath>
+#include "cmath"
+
+
 /**
  * Resets the constants for auton movement.
  * Modify these to change the default behavior of functions like
@@ -12,7 +14,7 @@ void default_constants(){
   // Each constant set is in the form of (maxVoltage, kP, kI, kD, startI).
 
    //chassis.set_drive_constants(12, 0.525, 5, 1, 0);  works 48 in
-   chassis.set_drive_constants(12, 0.6, 5, 3, 0); 
+  chassis.set_drive_constants(12, 0.6, 5, 3, 0); 
   chassis.set_heading_constants(12, 0.37, 0.5, 1, 0); //controls drive to pose
   chassis.set_turn_constants(12, .4, 0.02, 3.25, 15);
   chassis.set_swing_constants(12, .3, .001, 2, 15);
@@ -77,6 +79,7 @@ while (true) {
   lift.spinTo(-400,deg,true);
   chill(1);
   lift.spinTo(0,deg,true);
+
 }
 
 
@@ -129,6 +132,7 @@ void red_minus_elims_rush() {
   chill(200);
   grab.set(true);
   chill(50);
+  conveyor.spin(fwd);
   intakeLift.set(true);
   intake.spin(reverse);
   chassis.drive_to_point(-24,24);
@@ -157,9 +161,10 @@ void red_minus_elims_rush() {
   chassis.drive_max_voltage = 10;
   chassis.drive_distance(38.5,-175);
   chassis.drive_stop(hold);
+  conveyor.stop();
   intakeLift.set(true);
   wait(0.2,sec);
-  intake.spin(reverse);
+  //intake.spin(reverse);
   chill(1400);
   chassis.turn_timeout = 400;
   chassis.turn_to_angle(-135);
@@ -177,7 +182,8 @@ void red_minus_elims_rush() {
 
 void red_pos_goal_rush() {
   odom_constants();
-  intake.setVelocity(69,percent);
+  intake.setVelocity(100,percent);
+  conveyor.setVelocity(85,percent);
   chassis.set_coordinates(14,8,252);
 
   //goal rush
@@ -198,12 +204,12 @@ void red_pos_goal_rush() {
   chassis.drive_distance(-27);
   chill(200);
   grab.set(true);
-  intake.spin(reverse);
+  conveyor.spin(fwd);
   chill(300);
 
   //ring
   chassis.turn_to_angle(310);
-  intake.stop();
+  conveyor.stop();
   chassis.drive_min_voltage = 0;
   chassis.drive_timeout = 800;
   chassis.drive_distance(25);
@@ -211,6 +217,7 @@ void red_pos_goal_rush() {
   intakeLift.set(true);
   chill(200);
   intake.spin(reverse);
+  conveyor.spin(fwd);
   chill(1400);
 
   ///ladder
@@ -235,6 +242,7 @@ void blue_minus_elims_rush() {
   chill(50);
   intakeLift.set(true);
   intake.spin(reverse);
+  conveyor.spin(fwd);
   chassis.drive_to_point(24,24);
   chassis.drive_min_voltage = 4;
   chassis.turn_timeout = 800;
@@ -261,6 +269,7 @@ void blue_minus_elims_rush() {
   chassis.drive_max_voltage = 10;
   chassis.drive_distance(35,175);
   chassis.drive_stop(hold);
+  conveyor.stop();
   intakeLift.set(true);
   wait(0.2,sec);
   intake.spin(reverse);
@@ -300,6 +309,7 @@ void blue_pos_goal_rush() {
   chassis.drive_distance(-27);
   chill(200);
   grab.set(true);
+  conveyor.spin(fwd);
   intake.spin(reverse);
   chill(300);
 
@@ -312,6 +322,7 @@ void blue_pos_goal_rush() {
   chassis.drive_stop(coast);
   intakeLift.set(true);
   chill(200);
+  conveyor.spin(fwd);
   intake.spin(reverse);
   chill(1400);
 
