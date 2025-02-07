@@ -149,7 +149,7 @@ void red_minus_elims_rush() {
   chassis.drive_distance(15);
   chassis.drive_distance(-13, -305, 12, 4, chassis.drive_settle_error, chassis.drive_settle_time, 700);
   chill(100);
-  chassis.drive_distance(15.5,-312);
+  chassis.drive_distance(15.5,-309);
   chassis.drive_timeout = 700;
   chassis.drive_distance(-10);
   intakeLift.set(false);
