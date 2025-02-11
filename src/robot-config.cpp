@@ -32,7 +32,7 @@ potV2 Switcher = potV2(Brain.ThreeWirePort.B);
 rotation Rotation = rotation(PORT1, true);
 
 digital_out intakeLift = digital_out(Brain.ThreeWirePort.H); 
-digital_out doink = digital_out(Brain.ThreeWirePort.C);
+digital_out doink = digital_out(Brain.ThreeWirePort.G);
 
 
 void vexcodeInit( void ) {

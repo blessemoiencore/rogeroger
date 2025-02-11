@@ -171,7 +171,6 @@ void pre_auton() {
   default_constants();
   DrivetrainInertial.calibrate();
   //intakeLift.set(true);
-  lift.resetPosition();
 
   while(!auto_started){
     Brain.Screen.clearScreen();
@@ -237,7 +236,6 @@ void pre_auton() {
 
 void autonomous(void) {
   auto_started = true;
-  chassis.drive_distance(1);
 
   switch(current_auton_selection){ 
     case 0:         
@@ -284,6 +282,12 @@ void usercontrol(void) {
   lift.setVelocity(80,percent);
   while (1) {
   
+
+ Controller1.ButtonL2.pressed([] {
+
+  doink.set(!doink.value());
+
+  });
 
   if(Controller1.ButtonR1.pressing()) {
       conveyor.spin(reverse,100,percent);
